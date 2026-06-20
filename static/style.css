@@ -1,0 +1,103 @@
+body {
+  background: #f8f9fa;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar-brand {
+  font-weight: 500;
+}
+
+.card {
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+}
+
+.card-header {
+  background: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.soap-label {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.soap-value {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.badge-high {
+  background: #FCEBEB;
+  color: #791F1F;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.badge-medium {
+  background: #FAEEDA;
+  color: #633806;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.badge-low {
+  background: #EAF3DE;
+  color: #27500A;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+#loading {
+  display: none;
+}
+
+#results {
+  display: none;
+}
+
+#success-alert {
+  display: none;
+}
+
+/* ── reports page ───────────────────────────── */
+.critical-row {
+  background: #fff0f0;
+}
+
+.badge-pending {
+  background: #FAEEDA;
+  color: #633806;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.badge-received {
+  background: #EAF3DE;
+  color: #27500A;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.badge-critical {
+  background: #FCEBEB;
+  color: #791F1F;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+#critical-banner {
+  display: none;
+}
