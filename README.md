@@ -51,6 +51,7 @@ uvicorn main:app --reload
 http://127.0.0.1:8000/static/index.html
 ```
 ## Project structure
+```bash
 medpilot/
 
 ├── static/
@@ -70,6 +71,7 @@ medpilot/
 ├── requirements.txt     # Python dependencies
 
 └── .env                 # API keys (not committed)
+```
 
 ## API routes
 | Method | Route | Description |
