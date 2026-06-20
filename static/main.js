@@ -79,7 +79,17 @@ async function analyse() {
 
 function renderResults(data, transcript) {
   // transcript
-  document.getElementById("transcript-text").textContent = transcript;
+  // transcript
+  const lines = transcript.split("\n");
+  const formatted = lines.map(line => {
+    if (line.startsWith("Doctor:")) {
+      return `<div class="mb-2"><span style="font-size:11px;font-weight:600;color:#534AB7">DOCTOR</span><br><span style="font-size:13px">${line.replace("Doctor:", "").trim()}</span></div>`;
+    } else if (line.startsWith("Patient:")) {
+      return `<div class="mb-2"><span style="font-size:11px;font-weight:600;color:#0F6E56">PATIENT</span><br><span style="font-size:13px">${line.replace("Patient:", "").trim()}</span></div>`;
+    }
+    return `<div style="font-size:13px">${line}</div>`;
+  }).join("");
+  document.getElementById("transcript-text").innerHTML = formatted;
 
   // soap
   document.getElementById("soap-s").textContent = data.soap.subjective;
@@ -106,6 +116,19 @@ function renderResults(data, transcript) {
   // show results
   document.getElementById("loading").style.display = "none";
   document.getElementById("results").style.display = "block";
+}
+
+function swapSpeakers() {
+  const textarea = document.getElementById("transcript-input");
+  let text = textarea.value;
+
+  // temporarily replace to avoid double swapping
+  text = text
+    .replace(/^Doctor:/gm, "##TEMP##")
+    .replace(/^Patient:/gm, "Doctor:")
+    .replace(/^##TEMP##/gm, "Patient:");
+
+  textarea.value = text;
 }
 
 async function addToTracker() {

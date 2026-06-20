@@ -48,8 +48,6 @@ def ping():
 
 
 # ── POST /transcribe ──────────────────────────────────────────────
-# ── POST /transcribe ──────────────────────────────────────────────
-# step 1 — audio to transcript only
 @app.post("/transcribe")
 async def transcribe(audio: UploadFile = File(...), patient: str = "Unknown"):
 
@@ -59,7 +57,7 @@ async def transcribe(audio: UploadFile = File(...), patient: str = "Unknown"):
 
     async with httpx.AsyncClient() as http:
         dg_response = await http.post(
-            "https://api.deepgram.com/v1/listen?model=nova-2&punctuate=true&numerals=true",
+            "https://api.deepgram.com/v1/listen?model=nova-2&punctuate=true&numerals=true&diarize=true",
             headers={
                 "Authorization": f"Token {DEEPGRAM_KEY}",
                 "Content-Type": audio.content_type,
@@ -71,7 +69,30 @@ async def transcribe(audio: UploadFile = File(...), patient: str = "Unknown"):
     if dg_response.status_code != 200:
         return JSONResponse(status_code=502, content={"error": "Deepgram failed", "detail": dg_response.text})
 
-    transcript = dg_response.json()["results"]["channels"][0]["alternatives"][0]["transcript"]
+    words = dg_response.json()["results"]["channels"][0]["alternatives"][0]["words"]
+
+    # group words by speaker
+    transcript_lines = []
+    current_speaker = None
+    current_line = []
+
+    for word in words:
+        speaker = word.get("speaker", 0)
+        if speaker != current_speaker:
+            if current_line:
+                label = "Doctor" if current_speaker == 0 else "Patient"
+                transcript_lines.append(f"{label}: {' '.join(current_line)}")
+            current_speaker = speaker
+            current_line = [word["punctuated_word"]]
+        else:
+            current_line.append(word["punctuated_word"])
+
+    # add last line
+    if current_line:
+        label = "Doctor" if current_speaker == 0 else "Patient"
+        transcript_lines.append(f"{label}: {' '.join(current_line)}")
+
+    transcript = "\n".join(transcript_lines)
 
     if not transcript.strip():
         return JSONResponse(status_code=422, content={"error": "Audio was silent or unclear"})

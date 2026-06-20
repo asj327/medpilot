@@ -35,7 +35,7 @@
         <input type="file" id="audioFile" class="form-control form-control-sm" accept="audio/*">
         <div class="form-text">Accepts .mp3, .wav, .m4a</div>
       </div>
-      <button onclick="transcribe()" class="btn btn-dark btn-sm px-4">Transcribe and analyse</button>
+      <button onclick="transcribe()" class="btn btn-dark btn-sm px-4">Transcribe</button>
     </div>
   </div>
 
@@ -43,7 +43,10 @@
   <div id="transcript-editor" class="card mb-4" style="display:none">
     <div class="card-header p-3 d-flex align-items-center justify-content-between">
       <span>Review transcript</span>
-      <span class="text-muted" style="font-size:12px">Edit if needed, then confirm</span>
+      <div class="d-flex align-items-center gap-2">
+        <button onclick="swapSpeakers()" class="btn btn-sm btn-outline-secondary">⇄ Swap speakers</button>
+        <span class="text-muted" style="font-size:12px">Edit if needed, then confirm</span>
+      </div>
     </div>
     <div class="card-body p-3">
       <textarea id="transcript-input" class="form-control" rows="5" style="font-size:13px;line-height:1.7"></textarea>
@@ -52,24 +55,24 @@
   </div>
 
   <!-- loading -->
-  <div id="loading" class="text-center py-5">
+  <div id="loading" class="text-center py-5" style="display:none">
     <div class="spinner-border text-secondary" role="status"></div>
     <p class="mt-3 text-muted" style="font-size:13px">Transcribing audio and analysing consultation...</p>
   </div>
 
   <!-- success alert -->
-  <div id="success-alert" class="alert alert-success py-2 px-3" style="font-size:13px">
+  <div id="success-alert" class="alert alert-success py-2 px-3" style="display:none;font-size:13px">
     Tests added to report tracker successfully.
   </div>
 
   <!-- results -->
-  <div id="results">
+  <div id="results" style="display:none">
 
     <!-- transcript -->
     <div class="card mb-3">
       <div class="card-header p-3">Transcript</div>
       <div class="card-body p-3">
-        <p id="transcript-text" class="text-muted mb-0" style="font-size:13px;line-height:1.7"></p>
+        <p id="transcript-text" class="text-muted mb-0" style="font-size:13px;line-height:1.7;white-space:pre-wrap"></p>
       </div>
     </div>
 
@@ -107,9 +110,11 @@
     </div>
 
     <!-- add to tracker -->
-    <button onclick="addToTracker()" class="btn btn-outline-dark btn-sm px-4">
-      Add suggested tests to report tracker →
-    </button>
+    <div id="add-to-tracker" style="display:none">
+      <button onclick="addToTracker()" class="btn btn-outline-dark btn-sm px-4">
+        Add suggested tests to report tracker →
+      </button>
+    </div>
 
   </div>
 </div>

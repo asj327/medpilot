@@ -101,3 +101,7 @@ body {
 #critical-banner {
   display: none;
 }
+
+#transcript-input {
+  white-space: pre-wrap;
+}
