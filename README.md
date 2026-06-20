@@ -2,7 +2,9 @@
 An AI-powered clinical documentation assistant that automatically transcribes doctor-patient consultations, generates SOAP notes, suggests possible conditions and tests, and tracks pending reports with critical alerts.
 
 ## Features
-- 🎙 Upload consultation audio — transcribed instantly via Deepgram
+- 🎙 Upload consultation audio — transcribed instantly via Deepgram Nova-2
+- 👥 Speaker diarization — automatically detects and labels Doctor and Patient speech
+- ⇄ Swap speakers — one click to correct speaker labels if misidentified
 - ✏️ Edit transcript before analysis — fix errors before generating notes
 - 🧠 AI-generated SOAP notes — structured clinical documentation in seconds
 - 🔬 Condition suggestions — 3 possible diagnoses with likelihood and recommended tests
