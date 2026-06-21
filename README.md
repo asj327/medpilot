@@ -16,7 +16,7 @@ An AI-powered clinical documentation assistant that automatically transcribes do
 - **Transcription** — Deepgram Nova-2
 - **AI** — OpenAI GPT-4o-mini
 - **Database** — SQLite
-- **Frontend** — HTML, CSS, JavaScript, Bootstrap 5
+- **Frontend** — HTML, CSS, JavaScript
 
 ## How to run locally
 
@@ -39,7 +39,7 @@ pip install -r requirements.txt
 
 ### 4. Add API keys
 ```bash
-Create a `.env` file in the root folder:
+Create a .env file in the root folder:
 DEEPGRAM_API_KEY=your_deepgram_key_here
 OPENAI_API_KEY=your_openai_key_here
 ```
