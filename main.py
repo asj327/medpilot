@@ -241,7 +241,7 @@ def flag_critical(report_id: int, body: CriticalUpdate):
         "message": "Flagged as critical" if body.is_critical else "Flag removed"
     }
 
-    import fitz  # pymupdf
+import fitz  # pymupdf
 
 # ── POST /analyse-report ──────────────────────────────────────────
 @app.post("/analyse-report")
