@@ -79,7 +79,6 @@ async function analyse() {
 
 function renderResults(data, transcript) {
   // transcript
-  // transcript
   const lines = transcript.split("\n");
   const formatted = lines.map(line => {
     if (line.startsWith("Doctor:")) {
@@ -90,6 +89,8 @@ function renderResults(data, transcript) {
     return `<div style="font-size:13px">${line}</div>`;
   }).join("");
   document.getElementById("transcript-text").innerHTML = formatted;
+  // build test ordering panel
+  buildTestChecklist(data.conditions);
 
   // soap
   document.getElementById("soap-s").textContent = data.soap.subjective;
@@ -111,6 +112,8 @@ function renderResults(data, transcript) {
         </div>
         <div style="font-size:12px;color:#666">Tests: ${c.tests.join(", ")}</div>
       </div>`;
+      // build test ordering panel
+  buildTestChecklist(data.conditions);
   });
 
   // show results
@@ -153,5 +156,92 @@ async function addToTracker() {
     }, 3000);
   } else {
     alert("Failed to save to tracker.");
+  }
+}
+
+function buildTestChecklist(conditions) {
+  const container = document.getElementById("test-checklist");
+  container.innerHTML = "";
+
+  // collect all unique tests with their source condition
+  const allTests = [];
+  conditions.forEach(c => {
+    c.tests.forEach(test => {
+      if (!allTests.find(t => t.name === test)) {
+        allTests.push({ name: test, condition: c.name });
+      }
+    });
+  });
+
+  allTests.forEach((test, i) => {
+    const id = `test-${i}`;
+    const div = document.createElement("div");
+    div.className = "d-flex align-items-center gap-3 py-2 border-bottom";
+    div.innerHTML = `
+      <input
+        type="checkbox"
+        id="${id}"
+        value="${test.name}"
+        class="test-checkbox form-check-input mt-0"
+        onchange="updateCount()"
+        checked
+      >
+      <label for="${id}" style="font-size:13px;cursor:pointer;flex:1">
+        ${test.name}
+      </label>
+      <span style="font-size:11px;color:#888">${test.condition}</span>
+    `;
+    container.appendChild(div);
+  });
+
+  updateCount();
+}
+
+function updateCount() {
+  const checkboxes = document.querySelectorAll(".test-checkbox");
+  const checked = [...checkboxes].filter(cb => cb.checked).length;
+  document.getElementById("selected-count").textContent = `${checked} selected`;
+  document.getElementById("sign-btn").disabled = checked === 0;
+}
+
+function selectAll() {
+  document.querySelectorAll(".test-checkbox").forEach(cb => cb.checked = true);
+  updateCount();
+}
+
+function clearAll() {
+  document.querySelectorAll(".test-checkbox").forEach(cb => cb.checked = false);
+  updateCount();
+}
+
+async function signAndOrder() {
+  const checkboxes = document.querySelectorAll(".test-checkbox:checked");
+  const selectedTests = [...checkboxes].map(cb => cb.value);
+
+  if (selectedTests.length === 0) return;
+
+  const btn = document.getElementById("sign-btn");
+  btn.disabled = true;
+  btn.textContent = "Signing...";
+
+  const res = await fetch("/reports", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ patient: lastPatient, tests: selectedTests })
+  });
+
+  if (res.ok) {
+    btn.textContent = "✍️ Signed & Ordered ✓";
+    document.getElementById("order-success").style.display = "block";
+    // disable all checkboxes after signing
+    document.querySelectorAll(".test-checkbox").forEach(cb => cb.disabled = true);
+    document.getElementById("select-all-btn") && (document.getElementById("select-all-btn").disabled = true);
+    setTimeout(() => {
+      document.getElementById("order-success").style.display = "none";
+    }, 4000);
+  } else {
+    alert("Failed to order tests. Please try again.");
+    btn.disabled = false;
+    btn.textContent = "✍️ Sign & Order";
   }
 }

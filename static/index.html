@@ -109,11 +109,28 @@
       </div>
     </div>
 
-    <!-- add to tracker -->
-    <div id="add-to-tracker" style="display:none">
-      <button onclick="addToTracker()" class="btn btn-outline-dark btn-sm px-4">
-        Add suggested tests to report tracker →
-      </button>
+    <!-- test ordering -->
+    <div id="order-panel" class="card mt-3">
+      <div class="card-header p-3 d-flex align-items-center justify-content-between">
+        <span>Order tests</span>
+        <span id="selected-count" style="font-size:12px;color:#888">0 selected</span>
+      </div>
+      <div class="card-body p-3">
+        <div id="test-checklist"></div>
+        <hr class="my-3">
+        <div class="d-flex align-items-center gap-3">
+          <button onclick="selectAll()" class="btn btn-sm btn-outline-secondary">Select all</button>
+          <button onclick="clearAll()" class="btn btn-sm btn-outline-secondary">Clear all</button>
+          <button onclick="signAndOrder()" id="sign-btn" class="btn btn-sm btn-dark px-4 ms-auto" disabled>
+            ✍️ Sign & Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- order success -->
+    <div id="order-success" class="alert alert-success py-2 px-3 mt-3" style="display:none;font-size:13px">
+      ✅ Tests signed and ordered successfully. View them in the report tracker.
     </div>
 
   </div>
