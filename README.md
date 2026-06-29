@@ -1,15 +1,21 @@
 # MedPilot 🏥
-An AI-powered clinical documentation assistant that automatically transcribes doctor-patient consultations, generates SOAP notes, suggests possible conditions and tests, and tracks pending reports with critical alerts.
+An AI-powered clinical documentation assistant that automatically transcribes 
+doctor-patient consultations, generates SOAP notes, suggests possible conditions 
+and tests, tracks pending reports, analyses lab report PDFs, and alerts doctors 
+about critical findings — reducing paperwork and improving patient safety.
 
 ## Features
-- 🎙 Upload consultation audio — transcribed instantly via Deepgram Nova-2
-- 👥 Speaker diarization — automatically detects and labels Doctor and Patient speech
-- ⇄ Swap speakers — one click to correct speaker labels if misidentified
-- ✏️ Edit transcript before analysis — fix errors before generating notes
-- 🧠 AI-generated SOAP notes — structured clinical documentation in seconds
-- 🔬 Condition suggestions — 3 possible diagnoses with likelihood and recommended tests
-- 📋 Report tracker — track pending tests per patient
-- ⚠️ Critical flag — alert doctors immediately when a result is critical
+- 🎙 **Consultation transcription** — upload audio, transcribed instantly via Deepgram Nova-2
+- 👥 **Auto speaker detection** — automatically identifies Doctor and Patient speech using AI role mapping
+- ⇄ **Swap speakers** — one click to correct speaker labels if misidentified
+- ✏️ **Editable transcript** — review and fix transcript before analysis
+- 🧠 **AI SOAP notes** — structured clinical documentation generated in under 3 seconds
+- 🔬 **Condition suggestions** — 3 possible diagnoses with likelihood ratings and recommended tests
+- ✍️ **Sign & Order** — checkbox-based test ordering with single click confirmation
+- 📋 **Report tracker** — track pending tests per patient with status updates
+- ⚠️ **Critical flag** — instant alert when a test result is flagged as critical
+- 📄 **PDF report analysis** — upload lab report PDFs, auto-extract findings, flag abnormal values
+
 
 ## Tech stack
 - **Backend** — FastAPI, Python
@@ -17,6 +23,7 @@ An AI-powered clinical documentation assistant that automatically transcribes do
 - **AI** — OpenAI GPT-4o-mini
 - **Database** — SQLite
 - **Frontend** — HTML, CSS, JavaScript
+- **PDF parsing** — PyMuPDF
 
 ## How to run locally
 
@@ -52,6 +59,25 @@ uvicorn main:app --reload
 ```bash
 http://127.0.0.1:8000/static/index.html
 ```
+## How It Works
+
+### Consultation flow
+1. Doctor enters patient name and uploads a `.mp3` / `.wav` / `.m4a` recording
+2. Deepgram Nova-2 transcribes the audio with speaker diarization
+3. GPT-4o-mini auto-detects which speaker is the Doctor and which is the Patient
+4. Doctor reviews the labelled transcript, edits if needed, confirms
+5. GPT-4o-mini generates a structured SOAP note and 3 condition suggestions
+6. Doctor selects tests using checkboxes and clicks Sign & Order
+7. Ordered tests are saved to the report tracker
+
+### Report tracker flow
+1. All pending tests visible per patient
+2. Doctor ticks critical checkbox when an abnormal result arrives
+3. Row turns red, critical alert banner appears at top
+4. Doctor uploads lab report PDF — MedPilot extracts text and analyses findings
+5. Abnormal values flagged automatically with clinical recommendations
+
+
 ## Project structure
 ```bash
 medpilot/
