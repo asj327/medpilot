@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: medpilot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: 86101d2f92171c5b34969432ed68bccb68b0575c
+        sync: false
+      - key: sk-proj-7sLC1j10rmv9mZJL4QOjn2xJ7zsLKCbLjED5UnuMgGmzHmew2jOeeUoIjKYT9208
+        sync: false
+        
